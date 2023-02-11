@@ -4,9 +4,9 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 
-const Form = () => {
+const SkillForm = () => {
 
-  // what this is doing is that if we hit a Min width of 600 pixel we are triggering this basic Boolean so useMediaQuery comes from Material UI 
+  // if we hit a Min width of 600 pixel we are triggering this basic Boolean so useMediaQuery comes from Material UI 
   // and allows us to use media queries inside our JavaScript or react element itself so we don't have to write it in CSS
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
@@ -186,4 +186,4 @@ const initialValues = {
   address2: "",
 };
 
-export default Form;
+export default SkillForm;

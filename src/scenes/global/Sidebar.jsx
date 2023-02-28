@@ -15,6 +15,9 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import CelebrationIcon from '@mui/icons-material/Celebration';
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   // we're going to set up the theme and the colors  
@@ -103,7 +106,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                  Roadmap
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -111,34 +114,6 @@ const Sidebar = () => {
               </Box>
             )}
           </MenuItem>
-
-          {!isCollapsed && (
-            <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../assets/user.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  Ed Roh
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
-                </Typography>
-              </Box>
-            </Box>
-          )}
-
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
@@ -194,14 +169,14 @@ const Sidebar = () => {
             <Item
               title="Create Skill"
               to="/skillform"
-              icon={<PersonOutlinedIcon />}
+              icon={<PsychologyIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Create Event"
               to="/eventform"
-              icon={<PersonOutlinedIcon />}
+              icon={<CelebrationIcon />}
               selected={selected}
               setSelected={setSelected}
             />

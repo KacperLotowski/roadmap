@@ -1,8 +1,16 @@
+import * as React from 'react';
 import { Box, Button, TextField, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+
+
+
 
 // values to be replaced with correct db data
 const seniorities = [
@@ -27,16 +35,16 @@ const seniorities = [
 // values to be replaced with correct db data
 const roles = [
   {
-    value: 'Admin',
-    label: 'Admin',
+    value: 'Front-end Developer',
+    label: 'Front-end Developer',
   },
   {
-    value: 'Manager',
-    label: 'Manager',
+    value: 'Back-end Developer',
+    label: 'Back-end Developer',
   },
   {
-    value: 'Employee',
-    label: 'Employee',
+    value: 'Project Manager',
+    label: 'Project Manager',
   },
 ];
 
@@ -85,6 +93,16 @@ const UserForm = () => {
   const handleFormSubmit = (values) => {
     console.log(values);
   };
+
+
+  // setting default date on the "Hired" date picker
+  const [value, setValue] = React.useState(dayjs('2023-01-01'));
+
+  // this function sets chosen new date on date picker
+  const handleDateChange = (newValue) => {
+    setValue(newValue);
+  };
+
 
   return (
     <Box m="20px">
@@ -167,8 +185,35 @@ const UserForm = () => {
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 3" }}
               />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                  label="Hired"
+                  inputFormat="MM/DD/YYYY"
+                  value={value}
+                  onChange={handleDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+
+              <TextField
+                fullWidth
+                select
+                variant="filled"
+                type="text"
+                label="Role"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                sx={{ gridColumn: "span 2" }}
+              >
+              {roles.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+              </TextField>
+
               <TextField
                 fullWidth
                 select
@@ -177,7 +222,7 @@ const UserForm = () => {
                 label="Seniority"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                sx={{ gridColumn: "span 1" }}
+                sx={{ gridColumn: "span 2" }}
               >
               {/* dropdown using values from const seniorities */}
               {seniorities.map((option) => (
@@ -191,26 +236,10 @@ const UserForm = () => {
                 select
                 variant="filled"
                 type="text"
-                label="Role"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                sx={{ gridColumn: "span 1" }}
-              >
-              {roles.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-              </TextField>
-              <TextField
-                fullWidth
-                select
-                variant="filled"
-                type="text"
                 label="Manager"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                sx={{ gridColumn: "span 1" }}
+                sx={{ gridColumn: "span 2" }}
               >
               {managers.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -226,7 +255,7 @@ const UserForm = () => {
                 label="User Group"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                sx={{ gridColumn: "span 1" }}
+                sx={{ gridColumn: "span 2" }}
               >
               {userGroups.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -235,6 +264,7 @@ const UserForm = () => {
               ))}
               </TextField>
 
+              {/* // DATE PICKER */}
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -247,12 +277,6 @@ const UserForm = () => {
     </Box>
   );
 };
-
-//  phoneRegExp: this is a JavaScript thing where you can check based on the string so 
-// you'll be able to check what the values are
-// the below is something you can copy from StackOverflow
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 // checkoutSchema: this is going to define the validation logic for each field that we're using
 const checkoutSchema = yup.object().shape({
@@ -269,7 +293,6 @@ const checkoutSchema = yup.object().shape({
   // otherwise we are going to have required as the "required" error
   contact: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
 });
 const initialValues = {

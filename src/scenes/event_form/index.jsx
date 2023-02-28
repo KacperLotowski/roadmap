@@ -1,8 +1,13 @@
+import * as React from 'react';
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 const EventForm = () => {
 
@@ -16,10 +21,18 @@ const EventForm = () => {
   const handleFormSubmit = (values) => {
     console.log(values);
   };
+  
+  // setting default date on the "Hired" date picker
+  const [value, setValue] = React.useState(dayjs('2023-01-01'));
+
+  // this function sets chosen new date on date picker
+  const handleDateChange = (newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="CREATE EVENT" subtitle="Create a New Event" />
 
       <Formik
 
@@ -61,88 +74,62 @@ const EventForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="Event Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
+                value={values.eventName}
+                name="eventName"
                 
                 // we are triggering the helper text based on whether you've both 
                 // 1) touched it and 
                 // 2) it doesn't meet the error
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Last Name"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.lastName}
-                name="lastName"
-                error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
+                error={!!touched.eventName && !!errors.eventName}
+                helperText={touched.eventName && errors.eventName}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Contact Number"
+                label="Location"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
+                value={values.location}
+                name="location"
+                error={!!touched.location && !!errors.location}
+                helperText={touched.location && errors.location}
+                sx={{ gridColumn: "span 3" }}
               />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                  label="Date"
+                  inputFormat="MM/DD/YYYY"
+                  value={value}
+                  onChange={handleDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
               <TextField
                 fullWidth
+                multiline
+                rows={4}
+                defaultValue="Default Value"
+                size="large"
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Description"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
+                value={values.description}
+                name="description"
+                error={!!touched.description && !!errors.description}
+                helperText={touched.description && errors.description}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Create New Event
               </Button>
             </Box>
           </form>
@@ -152,36 +139,27 @@ const EventForm = () => {
   );
 };
 
-//  phoneRegExp: this is a JavaScript thing where you can check based on the string so 
-// you'll be able to check what the values are
-// the below is something you can copy from StackOverflow
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
 // checkoutSchema: this is going to define the validation logic for each field that we're using
 const checkoutSchema = yup.object().shape({
 
-  // firstName: if there is no input we're going to say first name is going to be a required input and 
+  // eventName: if there is no input we're going to say first name is going to be a required input and 
   // by doing this "required" will be the text that pops up if an error is triggered
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
+  eventName: yup.string().required("required"),
+  location: yup.string().required("required"),
   
-  // we're going to have two type of validation for contact:
+  // we're going to have two type of validation for description:
   // if it's not valid if it doesn't match this correctly it's going to give you "Phone number is not valid" error 
   // otherwise we are going to have required as the "required" error
-  contact: yup
+  description: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
   address1: yup.string().required("required"),
   address2: yup.string().required("required"),
 });
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  contact: "",
+  eventName: "",
+  location: "",
+  description: "",
   address1: "",
   address2: "",
 };

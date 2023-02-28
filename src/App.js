@@ -9,7 +9,7 @@ import Contacts from "./scenes/contacts";
 import Bar from "./scenes/bar";
 import UserForm from "./scenes/user_form";
 import SkillForm from "./scenes/skill_form";
-import EventForm from "./scenes/skill_form";
+import EventForm from "./scenes/event_form";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";

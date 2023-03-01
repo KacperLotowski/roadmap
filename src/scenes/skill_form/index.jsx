@@ -64,10 +64,10 @@ const SkillForm = () => {
                 label="Skill Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
+                value={values.skillName}
+                name="skillName"
+                error={!!touched.skillName && !!errors.skillName}
+                helperText={touched.skillName && errors.skillName}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -122,12 +122,6 @@ const SkillForm = () => {
   );
 };
 
-//  phoneRegExp: this is a JavaScript thing where you can check based on the string so 
-// you'll be able to check what the values are
-// the below is something you can copy from StackOverflow
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
 // checkoutSchema: this is going to define the validation logic for each field that we're using
 const checkoutSchema = yup.object().shape({
 
@@ -135,14 +129,13 @@ const checkoutSchema = yup.object().shape({
   // by doing this "required" will be the text that pops up if an error is triggered
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
+  skillName: yup.string().skillName("invalid skillName").required("required"),
   
   // we're going to have two type of validation for contact:
   // if it's not valid if it doesn't match this correctly it's going to give you "Phone number is not valid" error 
   // otherwise we are going to have required as the "required" error
   contact: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
   address1: yup.string().required("required"),
   address2: yup.string().required("required"),
@@ -150,7 +143,7 @@ const checkoutSchema = yup.object().shape({
 const initialValues = {
   firstName: "",
   lastName: "",
-  email: "",
+  skillName: "",
   contact: "",
   address1: "",
   address2: "",
